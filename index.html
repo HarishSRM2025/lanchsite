@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SRM Medical College & Hospital — Launching Soon</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0066cc;
+      --primary-dark: #004999;
+      --teal: #009688;
+      --green: #4caf50;
+      --gold: #cfbe25;
+      --red: #f44336;
+      --navy: #1a237e;
+      --text: #1a1a2e;
+      --text-mid: #444;
+      --text-soft: #7a869a;
+      --border: #e8edf5;
+      --white: #ffffff;
+      --bg: #f7fafd;
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #fff;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden
+    }
+
+    /* grid bg */
+    .page-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: linear-gradient(rgba(0, 102, 204, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 102, 204, .035) 1px, transparent 1px);
+      background-size: 52px 52px;
+      background-color: #f8fbff
+    }
+
+    .page-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 65% 50% at 10% 25%, rgba(0, 102, 204, .07) 0%, transparent 70%),
+        radial-gradient(ellipse 55% 45% at 90% 75%, rgba(0, 150, 136, .06) 0%, transparent 70%)
+    }
+
+    /* floating dots */
+    .float-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden
+    }
+
+    .mol {
+      position: absolute;
+      border-radius: 50%;
+      animation: molUp linear infinite;
+      opacity: 0
+    }
+
+    @keyframes molUp {
+      0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0
+      }
+
+      8% {
+        opacity: .6
+      }
+
+      90% {
+        opacity: .12
+      }
+
+      100% {
+        transform: translateY(-60px) scale(.9);
+        opacity: 0
+      }
+    }
+
+    /* pulse rings */
+    .pulse-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .p-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 102, 204, .1);
+      animation: pOut 4s ease-out infinite
+    }
+
+    .p-ring:nth-child(2) {
+      animation-delay: 1.4s;
+      border-color: rgba(0, 150, 136, .08)
+    }
+
+    .p-ring:nth-child(3) {
+      animation-delay: 2.8s;
+      border-color: rgba(76, 175, 80, .06)
+    }
+
+    @keyframes pOut {
+      0% {
+        width: 60px;
+        height: 60px;
+        opacity: .9
+      }
+
+      100% {
+        width: 720px;
+        height: 720px;
+        opacity: 0
+      }
+    }
+
+    /* ECG strip */
+    .ecg-strip {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden
+    }
+
+    .ecg-strip svg {
+      position: absolute;
+      bottom: 0
+    }
+
+    .ecg-path {
+      stroke: var(--primary);
+      stroke-width: 1.5;
+      fill: none;
+      opacity: .14;
+      animation: ecgScroll 3s linear infinite
+    }
+
+    @keyframes ecgScroll {
+      from {
+        transform: translateX(0)
+      }
+
+      to {
+        transform: translateX(-50%)
+      }
+    }
+
+    /* ── MAIN ── */
+    .wrapper {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px 90px;
+      text-align: center
+    }
+
+    .top-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 22px;
+      border-radius: 100px;
+      border: 1.5px solid rgba(0, 102, 204, .15);
+      background: rgba(0, 102, 204, .05);
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 40px;
+      animation: fadeUp .8s ease both
+    }
+
+    .bdot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: blink 1.4s ease-in-out infinite
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: .35;
+        transform: scale(.65)
+      }
+    }
+
+    /* logo */
+    .logo-block {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 32px;
+      animation: fadeUp .8s .1s ease both
+    }
+
+    .logo-shield {
+      width: 76px;
+      height: 76px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 4px 18px rgba(0, 102, 204, .18))
+    }
+
+    .logo-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1.25;
+      text-align: left
+    }
+
+    .logo-tag {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-soft);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-top: 4px;
+      text-align: left
+    }
+
+    .divider {
+      width: 56px;
+      height: 3px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--primary), var(--teal));
+      margin: 0 auto 34px;
+      animation: fadeUp .8s .15s ease both
+    }
+
+    /* headline */
+    .headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6.5vw, 5rem);
+      font-weight: 900;
+      line-height: 1.07;
+      margin-bottom: 18px;
+      animation: fadeUp .8s .2s ease both
+    }
+
+    .hl1 {
+      display: block;
+      color: var(--navy)
+    }
+
+    .hl2 {
+      display: block;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--teal) 55%, var(--green) 100%);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gSlide 4s ease infinite
+    }
+
+    @keyframes gSlide {
+
+      0%,
+      100% {
+        background-position: 0%
+      }
+
+      50% {
+        background-position: 100%
+      }
+    }
+
+    .desc {
+      font-size: clamp(.88rem, 2vw, 1.02rem);
+      color: var(--text-soft);
+      max-width: 490px;
+      line-height: 1.8;
+      margin: 0 auto 44px;
+      animation: fadeUp .8s .3s ease both
+    }
+
+    /* chips */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 52px;
+      animation: fadeUp .8s .35s ease both
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      font-size: .78rem;
+      font-weight: 500;
+      color: var(--text-mid);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+      transition: all .25s
+    }
+
+    .chip:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 102, 204, .12)
+    }
+
+    .chip svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0
+    }
+
+    /* button */
+    .btn-wrap {
+      position: relative;
+      display: inline-block;
+      animation: fadeUp .8s .42s ease both
+    }
+
+    .btn-halo {
+      position: absolute;
+      inset: -6px;
+      border-radius: 100px;
+      background: linear-gradient(135deg, var(--primary), var(--teal), var(--green));
+      opacity: .22;
+      filter: blur(18px);
+      animation: haloPls 2.5s ease-in-out infinite
+    }
+
+    @keyframes haloPls {
+
+      0%,
+      100% {
+        opacity: .18
+      }
+
+      50% {
+        opacity: .42
+      }
+    }
+
+    .btn-launch {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 13px;
+      padding: 19px 52px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      background: linear-gradient(135deg, var(--primary) 0%, #0080ee 45%, var(--teal) 100%);
+      background-size: 200% 200%;
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: .05em;
+      box-shadow: 0 6px 28px rgba(0, 102, 204, .32);
+      animation: bGrad 3s ease infinite;
+      transition: transform .2s, box-shadow .2s
+    }
+
+    .btn-launch:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 38px rgba(0, 102, 204, .44)
+    }
+
+    .btn-launch:active {
+      transform: scale(.97)
+    }
+
+    @keyframes bGrad {
+
+      0%,
+      100% {
+        background-position: 0% 50%
+      }
+
+      50% {
+        background-position: 100% 50%
+      }
+    }
+
+    .btn-launch .bico {
+      display: flex;
+      animation: pulse 1.4s ease-in-out infinite
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1)
+      }
+
+      50% {
+        transform: scale(1.18)
+      }
+    }
+
+    .btn-launch svg {
+      width: 20px;
+      height: 20px
+    }
+
+    /* trust */
+    .trust {
+      margin-top: 46px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp .8s .5s ease both
+    }
+
+    .ti {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: .76rem;
+      color: var(--text-soft)
+    }
+
+    .ti svg {
+      width: 15px;
+      height: 15px;
+      color: var(--green)
+    }
+
+    .tsep {
+      width: 1px;
+      height: 18px;
+      background: var(--border)
+    }
+
+    /* ── COUNTDOWN ── */
+    #cdOv {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: #f8fbff;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column
+    }
+
+    #cdOv.active {
+      display: flex
+    }
+
+    .cd-gbg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(0, 102, 204, .04) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 102, 204, .04) 1px, transparent 1px);
+      background-size: 52px 52px
+    }
+
+    .cd-rl {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none
+    }
+
+    .cd-r {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 102, 204, .1);
+      animation: cdR 3s ease-out infinite
+    }
+
+    .cd-r:nth-child(2) {
+      animation-delay: 1s;
+      border-color: rgba(0, 150, 136, .08)
+    }
+
+    .cd-r:nth-child(3) {
+      animation-delay: 2s;
+      border-color: rgba(76, 175, 80, .06)
+    }
+
+    @keyframes cdR {
+      0% {
+        width: 80px;
+        height: 80px;
+        opacity: .9
+      }
+
+      100% {
+        width: 820px;
+        height: 820px;
+        opacity: 0
+      }
+    }
+
+    .cd-eb {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 66px;
+      overflow: hidden;
+      pointer-events: none
+    }
+
+    .cd-eb svg {
+      position: absolute;
+      bottom: 0
+    }
+
+    .cd-ep {
+      stroke: var(--primary);
+      stroke-width: 1.5;
+      fill: none;
+      opacity: .16;
+      animation: ecgScroll 2.5s linear infinite
+    }
+
+    /* panel */
+    .cd-panel {
+      position: relative;
+      z-index: 10;
+      background: #fff;
+      border-radius: 28px;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 20px 80px rgba(0, 0, 0, .08), 0 4px 20px rgba(0, 102, 204, .07);
+      padding: 50px 56px 42px;
+      text-align: center;
+      min-width: 340px
+    }
+
+    .cd-logo {
+      margin-bottom: 24px
+    }
+
+    .cd-logo svg {
+      width: 48px;
+      height: 48px
+    }
+
+    .cd-eyebrow {
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 22px
+    }
+
+    /* ring timer */
+    .cd-rw {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 22px
+    }
+
+    .cd-rs {
+      transform: rotate(-90deg)
+    }
+
+    .cd-tr {
+      fill: none;
+      stroke: #edf2f9;
+      stroke-width: 8
+    }
+
+    .cd-ar {
+      fill: none;
+      stroke: url(#ag);
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 565.5;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset .9s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    .cd-inn {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px
+    }
+
+    .cd-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      font-weight: 900;
+      /* line-height: 1; */
+      color: var(--navy);
+      animation: nBounce .35s cubic-bezier(.34, 1.56, .64, 1) both
+    }
+
+    @keyframes nBounce {
+      0% {
+        transform: scale(.55);
+        opacity: 0
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    .cd-unit {
+      font-size: .68rem;
+      color: var(--text-soft);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-top: 2px
+    }
+
+    /* pills */
+    .cd-pills {
+      display: flex;
+      gap: 5px;
+      justify-content: center;
+      margin-bottom: 18px
+    }
+
+    .cd-p {
+      width: 24px;
+      height: 4px;
+      border-radius: 10px;
+      background: #e8edf5;
+      transition: background .3s
+    }
+
+    .cd-p.lit {
+      background: linear-gradient(90deg, var(--primary), var(--teal))
+    }
+
+    .cd-p.cur {
+      background: var(--primary);
+      animation: pp .7s ease infinite
+    }
+
+    @keyframes pp {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .35
+      }
+    }
+
+    .cd-stat {
+      font-size: .78rem;
+      color: var(--text-soft);
+      margin-bottom: 22px;
+      min-height: 18px
+    }
+
+    /* icon row */
+    .cd-icons {
+      display: flex;
+      gap: 12px;
+      justify-content: center
+    }
+
+    .cd-ic {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      animation: iWave 3s ease-in-out infinite
+    }
+
+    .cd-ic:nth-child(2) {
+      animation-delay: .3s
+    }
+
+    .cd-ic:nth-child(3) {
+      animation-delay: .6s
+    }
+
+    .cd-ic:nth-child(4) {
+      animation-delay: .9s
+    }
+
+    .cd-ic:nth-child(5) {
+      animation-delay: 1.2s
+    }
+
+    @keyframes iWave {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-5px)
+      }
+    }
+
+    .cd-ic svg {
+      width: 20px;
+      height: 20px
+    }
+
+    /* ── REVEAL ── */
+    #rvOv {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: #fff;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column
+    }
+
+    #rvOv.active {
+      display: flex
+    }
+
+    /* ── RIBBON ── */
+    .ribbon-container {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 250;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .rib-left, .rib-right {
+      position: absolute;
+      top: 50%;
+      width: 50.5%;
+      height: 70px;
+      background: linear-gradient(to bottom, #d32f2f, #f44336, #d32f2f);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transform: translateY(-50%);
+    }
+    .rib-left {
+      left: 0;
+      transform-origin: left center;
+      /* clip-path: polygon(0 0, 100% 0, 96% 50%, 100% 100%, 0 100%); */
+    }
+    .rib-right {
+      right: 0;
+      transform-origin: right center;
+      
+      /* clip-path: polygon(4% 50%, 0 0, 100% 0, 100% 100%, 0 100%); */
+    }
+    
+    #rvOv.active .rib-left {
+      animation: ribL 1.2s 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+    }
+    #rvOv.active .rib-right {
+      animation: ribR 1.2s 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+    }
+    @keyframes ribL {
+      0% { transform: translateY(-50%) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-50%) rotate(-15deg) translateX(-10vw) translateY(50vh); opacity: 0; }
+    }
+    @keyframes ribR {
+      0% { transform: translateY(-50%) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-50%) rotate(15deg) translateX(10vw) translateY(50vh); opacity: 0; }
+    }
+
+    .scissors {
+      position: absolute;
+      top: 50%; left: 47%;
+      width: 90px; height: 90px;
+      transform: translate(-50%, -150%) scale(1.5) rotate(0deg);
+      opacity: 0;
+      z-index: 260;
+    }
+    .scissors svg {
+      width: 100%; height: 100%;
+    }
+    #rvOv.active .scissors {
+      animation: scissorAnim 1.2s forwards;
+    }
+    @keyframes scissorAnim {
+      0% { opacity: 0; transform: translate(-50%, -150%) scale(1.5) rotate(0deg); }
+      30% { opacity: 1; transform: translate(-50%, -50%) scale(1.2) rotate(-15deg); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2) rotate(-35deg); }
+      100% { opacity: 0; transform: translate(-50%, 100%) scale(1) rotate(-15deg); }
+    }
+
+    .rv-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden
+    }
+
+    .rv-ray {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2px;
+      height: 0;
+      transform-origin: top center;
+      opacity: 0;
+      animation: rayS 1.2s ease both
+    }
+
+    @keyframes rayS {
+      0% {
+        height: 0;
+        opacity: 0
+      }
+
+      40% {
+        opacity: .6
+      }
+
+      100% {
+        height: 58vh;
+        opacity: 0
+      }
+    }
+
+    .rv-conf {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden
+    }
+
+    .conf {
+      position: absolute;
+      top: -12px;
+      border-radius: 2px;
+      animation: cFall linear both
+    }
+
+    @keyframes cFall {
+      0% {
+        transform: translateY(0)rotate(0deg);
+        opacity: 1
+      }
+
+      100% {
+        transform: translateY(110vh)rotate(720deg);
+        opacity: 0
+      }
+    }
+
+    .rv-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 24px;
+      animation: rvIn .7s 1.2s cubic-bezier(.34, 1.56, .64, 1) both
+    }
+
+    @keyframes rvIn {
+      0% {
+        transform: scale(.65);
+        opacity: 0
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    .rv-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 22px;
+      border-radius: 100px;
+      background: linear-gradient(135deg, #e8f5e9, #e0f5f3);
+      border: 1.5px solid rgba(76, 175, 80, .25);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 26px;
+      animation: sUp .5s 1.4s ease both
+    }
+
+    .rv-bdot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: blink 1s ease-in-out infinite
+    }
+
+    .rv-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.3rem, 5.5vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 10px
+    }
+
+    .rv-t1 {
+      display: block;
+      color: var(--navy);
+      animation: sUp .5s 1.5s ease both
+    }
+
+    .rv-t2 {
+      display: block;
+      background: linear-gradient(90deg, var(--primary), var(--teal), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: sUp .5s 1.6s ease both
+    }
+
+    .rv-sub {
+      font-size: .95rem;
+      color: var(--text-soft);
+      margin: 12px 0 38px;
+      animation: sUp .5s 1.7s ease both
+    }
+
+    .btn-visit {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 48px;
+      border-radius: 100px;
+      background: linear-gradient(135deg, var(--primary), var(--teal));
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      box-shadow: 0 6px 32px rgba(0, 102, 204, .28);
+      animation: sUp .5s 1.8s ease both, vPls 2.5s 2.8s ease-in-out infinite;
+      transition: transform .2s
+    }
+
+    .btn-visit:hover {
+      transform: translateY(-3px)
+    }
+
+    .btn-visit svg {
+      width: 17px;
+      height: 17px
+    }
+
+    @keyframes vPls {
+
+      0%,
+      100% {
+        box-shadow: 0 6px 32px rgba(0, 102, 204, .28)
+      }
+
+      50% {
+        box-shadow: 0 10px 52px rgba(0, 102, 204, .5)
+      }
+    }
+
+    @keyframes fadeUp {
+      0% {
+        transform: translateY(22px);
+        opacity: 0
+      }
+
+      100% {
+        transform: translateY(0);
+        opacity: 1
+      }
+    }
+
+    @keyframes sUp {
+      0% {
+        transform: translateY(18px);
+        opacity: 0
+      }
+
+      100% {
+        transform: translateY(0);
+        opacity: 1
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-bg"></div>
+  <div class="pulse-layer">
+    <div class="p-ring"></div>
+    <div class="p-ring"></div>
+    <div class="p-ring"></div>
+  </div>
+  <div class="float-layer" id="fl"></div>
+
+  <!-- ECG footer strip -->
+  <div class="ecg-strip">
+    <svg width="2400" height="64" viewBox="0 0 2400 64">
+      <path class="ecg-path"
+        d="M0,32 L80,32 L92,32 L102,5 L112,59 L122,32 L158,32 L238,32 L250,32 L260,5 L270,59 L280,32 L316,32 L396,32 L408,32 L418,5 L428,59 L438,32 L474,32 L554,32 L566,32 L576,5 L586,59 L596,32 L632,32 L712,32 L724,32 L734,5 L744,59 L754,32 L790,32 L870,32 L882,32 L892,5 L902,59 L912,32 L948,32 L1028,32 L1040,32 L1050,5 L1060,59 L1070,32 L1106,32 L1186,32 L1198,32 L1208,5 L1218,59 L1228,32 L1264,32 L1344,32 L1356,32 L1366,5 L1376,59 L1386,32 L1422,32 L1502,32 L1514,32 L1524,5 L1534,59 L1544,32 L1580,32 L1660,32 L1672,32 L1682,5 L1692,59 L1702,32 L1738,32 L1818,32 L1830,32 L1840,5 L1850,59 L1860,32 L1896,32 L1976,32 L1988,32 L1998,5 L2008,59 L2018,32 L2054,32 L2134,32 L2146,32 L2156,5 L2166,59 L2176,32 L2212,32 L2292,32 L2304,32 L2314,5 L2324,59 L2334,32 L2370,32 L2400,32" />
+    </svg>
+  </div>
+
+
+  <!-- ════════ MAIN PAGE ════════ -->
+  <main class="wrapper" id="mainPage">
+
+    <div class="top-banner"><span class="bdot"></span>Coming Soon · Stay Tuned</div>
+
+    <!-- Logo -->
+    <div class="logo-block">
+      <img src="./v_logo.png" width="100px" alt="">
+      <div>
+        <div class="logo-name">Trichy SRM Medical College Hospital and Research Centre</div>
+        <div class="logo-tag">Excellence in Healthcare Education & Patient Care</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h1 class="headline">
+      <span class="hl1">Our New Website</span>
+      <span class="hl2">Is Almost Here</span>
+    </h1>
+    <p class="desc">A world-class digital platform for healthcare education, patient care, and medical excellence —
+      crafted with precision for you.</p>
+
+    <div class="chips">
+      <div class="chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path
+            d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6 6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3" />
+          <path d="M8 15v1a6 6 0 0 0 6 6 6 6 0 0 0 6-6v-4" />
+          <circle cx="20" cy="10" r="2" />
+        </svg>
+        Advanced Facilities
+      </div>
+      <div class="chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#009688" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+        Expert Faculty
+      </div>
+      <div class="chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M6 18h8" />
+          <path d="M3 22h18" />
+          <path d="M14 22a7 7 0 1 0 0-14h-1" />
+          <path d="M9 14h2" />
+          <path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z" />
+          <path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3" />
+        </svg>
+        Research Programs
+      </div>
+      <div class="chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#f44336" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path
+            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+        </svg>
+        24/7 Patient Care
+      </div>
+      <div class="chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#cfbe25" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg>
+        Modern Diagnostics
+      </div>
+    </div>
+
+    <div class="btn-wrap">
+      <div class="btn-halo"></div>
+      <button class="btn-launch" id="launchBtn" onclick="startCountdown()">
+        <span class="bico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+            <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+            <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
+          </svg>
+        </span>
+        Launch Website
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </span>
+      </button>
+    </div>
+
+    <div class="trust">
+      <div class="ti">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+        NAAC Accredited
+      </div>
+      <div class="tsep"></div>
+      <div class="ti">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+        MCI Recognized
+      </div>
+      <div class="tsep"></div>
+      <div class="ti">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+        1000+ Beds Hospital
+      </div>
+    </div>
+
+  </main>
+
+
+  <!-- ════════ COUNTDOWN ════════ -->
+  <div id="cdOv">
+    <div class="cd-gbg"></div>
+    <div class="cd-rl">
+      <div class="cd-r"></div>
+      <div class="cd-r"></div>
+      <div class="cd-r"></div>
+    </div>
+    <div class="cd-eb">
+      <svg width="2400" height="66" viewBox="0 0 2400 66">
+        <path class="cd-ep"
+          d="M0,33 L80,33 L92,33 L102,5 L112,61 L122,33 L158,33 L238,33 L250,33 L260,5 L270,61 L280,33 L316,33 L396,33 L408,33 L418,5 L428,61 L438,33 L474,33 L554,33 L566,33 L576,5 L586,61 L596,33 L632,33 L712,33 L724,33 L734,5 L744,61 L754,33 L790,33 L870,33 L882,33 L892,5 L902,61 L912,33 L948,33 L1028,33 L1040,33 L1050,5 L1060,61 L1070,33 L1106,33 L1186,33 L1198,33 L1208,5 L1218,61 L1228,33 L1264,33 L1344,33 L1356,33 L1366,5 L1376,61 L1386,33 L1422,33 L1502,33 L1514,33 L1524,5 L1534,61 L1544,33 L1580,33 L1660,33 L1672,33 L1682,5 L1692,61 L1702,33 L1738,33 L1818,33 L1830,33 L1840,5 L1850,61 L1860,33 L1896,33 L1976,33 L1988,33 L1998,5 L2008,61 L2018,33 L2054,33 L2134,33 L2146,33 L2156,5 L2166,61 L2176,33 L2212,33 L2292,33 L2304,33 L2314,5 L2324,61 L2334,33 L2370,33 L2400,33" />
+      </svg>
+    </div>
+
+    <div class="cd-panel">
+      <div class="cd-logo">
+        <svg viewBox="0 0 48 48" fill="none">
+          <defs>
+            <linearGradient id="sg2" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#0066cc" />
+              <stop offset="100%" stop-color="#009688" />
+            </linearGradient>
+          </defs>
+          <path d="M24 3L7 11V26C7 35.5 15.5 42 24 45C32.5 42 41 35.5 41 26V11L24 3Z" fill="url(#sg2)" opacity="0.1" />
+          <path d="M24 3L7 11V26C7 35.5 15.5 42 24 45C32.5 42 41 35.5 41 26V11L24 3Z" stroke="url(#sg2)"
+            stroke-width="1.5" fill="none" />
+          <rect x="20" y="13" width="8" height="22" rx="2" fill="url(#sg2)" />
+          <rect x="13" y="20" width="22" height="8" rx="2" fill="url(#sg2)" />
+        </svg>
+      </div>
+      <div class="cd-eyebrow">Website Launching In</div>
+
+      <div class="cd-rw">
+        <svg class="cd-rs" width="200" height="200" viewBox="0 0 200 200">
+          <defs>
+            <linearGradient id="ag" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#0066cc" />
+              <stop offset="55%" stop-color="#009688" />
+              <stop offset="100%" stop-color="#4caf50" />
+            </linearGradient>
+          </defs>
+          <circle class="cd-tr" cx="100" cy="100" r="90" />
+          <circle class="cd-ar" id="cdArc" cx="100" cy="100" r="90" />
+        </svg>
+        <div class="cd-inn">
+          <div class="cd-num" id="cdNum">10</div>
+          <div class="cd-unit">seconds</div>
+        </div>
+      </div>
+
+      <div class="cd-pills" id="cdPills"></div>
+      <div class="cd-stat" id="cdStat">Preparing launch…</div>
+
+      <div class="cd-icons">
+        <!-- stethoscope -->
+        <div class="cd-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path
+              d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6 6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3" />
+            <path d="M8 15v1a6 6 0 0 0 6 6 6 6 0 0 0 6-6v-4" />
+            <circle cx="20" cy="10" r="2" />
+          </svg>
+        </div>
+        <!-- ecg -->
+        <div class="cd-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#009688" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+        </div>
+        <!-- hospital building -->
+        <div class="cd-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M12 6v4m0 0v4m0-4h4m-4 0H8" />
+            <path d="M3 21V8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v13" />
+            <path d="M3 21h18" />
+            <path d="M9 21v-4h6v4" />
+          </svg>
+        </div>
+        <!-- dna -->
+        <div class="cd-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#cfbe25" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M2 15c6.667-6 13.333 0 20-6" />
+            <path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993" />
+            <path d="M15 2c-1.798 1.998-2.518 3.995-2.807 5.993" />
+            <path d="m2 9 .5 1" />
+            <path d="m22 15-.5-1" />
+            <path d="m6.5 12.5 1 .5" />
+            <path d="m17.5 11.5-1-.5" />
+          </svg>
+        </div>
+        <!-- pill/capsule -->
+        <div class="cd-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f44336" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
+            <path d="m8.5 8.5 7 7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════ REVEAL ════════ -->
+  <div id="rvOv">
+    <div class="ribbon-container">
+      <div class="rib-left"></div>
+      <div class="rib-right"></div>
+      <div class="scissors">
+        <img src="./scissor.png" width="150px" alt="">
+      </div>
+    </div>
+    <div class="rv-bg" id="rvBg"></div>
+    <div class="rv-conf" id="rvConf"></div>
+    <div class="rv-content">
+      <div class="rv-badge"><span class="rv-bdot"></span>Live Now</div>
+      <h2 class="rv-title">
+        <span class="rv-t1">Our New Website</span>
+        <span class="rv-t2">Is Out Now!</span>
+      </h2>
+      <p class="rv-sub">Trichy SRM Medical College Hospital and Research Centre</p>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    const REDIRECT_URL = "https://diwasrm2025.github.io/NewSRMTrichy/"; // ← change your URL here
+    const TOTAL = 10;
+    const MSGS = ["Preparing launch…", "Loading systems…", "Connecting servers…", "Running diagnostics…", "Checking vitals…", "Calibrating modules…", "Almost ready…", "Final checks…", "Get ready…", "Launching now…"];
+    const CIRC = 2 * Math.PI * 90;
+
+    /* floating dots */
+    const flEl = document.getElementById('fl');
+    const fc = ['rgba(0,102,204,.5)', 'rgba(0,150,136,.5)', 'rgba(76,175,80,.5)', 'rgba(207,190,37,.38)'];
+    for (let i = 0; i < 26; i++) {
+      const d = document.createElement('div'); d.className = 'mol';
+      const s = 3 + Math.random() * 7;
+      d.style.cssText = `width:${s}px;height:${s}px;left:${Math.random() * 100}%;background:${fc[Math.floor(Math.random() * fc.length)]};animation-duration:${7 + Math.random() * 9}s;animation-delay:${Math.random() * 12}s;`;
+      flEl.appendChild(d);
+    }
+
+    /* pills */
+    const pw = document.getElementById('cdPills');
+    for (let i = 0; i < TOTAL; i++) { const p = document.createElement('div'); p.className = 'cd-p'; p.id = 'p' + i; pw.appendChild(p); }
+
+    function startCountdown() {
+      document.getElementById('mainPage').style.display = 'none';
+      document.getElementById('cdOv').classList.add('active');
+      let n = TOTAL; updateCD(n);
+      const t = setInterval(() => { n--; if (n < 0) { clearInterval(t); showReveal(); return; } updateCD(n); }, 1000);
+    }
+
+    function updateCD(n) {
+      const el = document.getElementById('cdNum');
+      el.style.animation = 'none'; void el.offsetWidth;
+      el.textContent = n === 0 ? '✓' : n;
+      el.style.animation = 'nBounce .35s cubic-bezier(.34,1.56,.64,1) both';
+      document.getElementById('cdStat').textContent = MSGS[Math.min(TOTAL - n, MSGS.length - 1)];
+      document.getElementById('cdArc').style.strokeDashoffset = CIRC * (1 - n / TOTAL);
+      for (let i = 0; i < TOTAL; i++) {
+        const p = document.getElementById('p' + i);
+        const step = TOTAL - 1 - i;
+        p.className = 'cd-p' + (n <= step ? ' lit' : (n === step + 1 ? ' cur' : ''));
+      }
+    }
+
+    function showReveal() {
+      document.getElementById('cdOv').classList.remove('active');
+      const rv = document.getElementById('rvOv'); rv.classList.add('active');
+      document.getElementById('visitBtn').href = REDIRECT_URL;
+      const bg = document.getElementById('rvBg');
+      for (let i = 0; i < 30; i++) {
+        const r = document.createElement('div'); r.className = 'rv-ray';
+        const angle = (i / 30) * 360, hue = 200 + (i / 30) * 80;
+        const animDelay = 1.2 + Math.random() * 0.28;
+        r.style.cssText = `transform:rotate(${angle}deg);background:linear-gradient(to bottom,hsla(${hue},70%,55%,.55),transparent);animation-delay:${animDelay}s;`;
+        bg.appendChild(r);
+      }
+      
+      setTimeout(() => {
+        const duration = 3500;
+        const end = Date.now() + duration;
+
+        confetti({
+          zIndex: 300,
+          particleCount: 150,
+          spread: 100,
+          origin: { y: 0.6 },
+          colors: ['#0066cc', '#009688', '#4caf50', '#cfbe25', '#f44336', '#9c27b0', '#ffc107']
+        });
+
+        (function frame() {
+          confetti({
+            zIndex: 300,
+            particleCount: 5,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: ['#0066cc', '#009688', '#4caf50', '#cfbe25', '#f44336', '#9c27b0', '#ffc107']
+          });
+          confetti({
+            zIndex: 300,
+            particleCount: 5,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: ['#0066cc', '#009688', '#4caf50', '#cfbe25', '#f44336', '#9c27b0', '#ffc107']
+          });
+
+          if (Date.now() < end) {
+            requestAnimationFrame(frame);
+          }
+        }());
+      }, 600);
+
+      setTimeout(() => window.location.href = REDIRECT_URL, 7000);
+    }
+  </script>
+</body>
+
+</html>
